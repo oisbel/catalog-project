@@ -1,41 +1,61 @@
-from flask import Flask
+from flask import Flask, render_template, request, redirect,jsonify, url_for, flash
+
+from sqlalchemy import create_engine, asc
+from sqlalchemy.orm import sessionmaker
+from database import Base, User, Artist, Track
 
 app = Flask(__name__)
 
-# Show the categories and latest items
+#Connect to Database and create database session
+engine = create_engine('sqlite:///catalog.db')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+
+# Show the artists and latest tracks
 @app.route('/')
-@app.route('/catalog')
-def showCategories():
+def showArtist():
 	return "main page"
 
-# Show the items available for a category
-@app.route('/catalog/<string:category_name>/items')
-def showItems(category_name):
-	return "Items in {}".format(category_name)
+# Show the tracks available for an artist
+@app.route('/catalog/<string:artist_name>/tracks')
+def showItems(artist_name):
+	return "Items in {}".format(artist_name)
 
-# Show the especify information of an item
-@app.route('/catalog/<string:category_name>/<string:item_title>')
-def showItem(category_name, item_title):
-	return "{} in {}".format(item_title,category_name)
+# Show the information of a track
+@app.route('/catalog/<string:artist_name>/<string:track_title>')
+def showItem(artist_name, track_title):
+	return "{} in {}".format(track_title,artist_name)
 
-# Add an item
+# Add track
 @app.route('/catalog/add')
 def addItem():
 	return "Add Item"
 
-# Edit item
-@app.route('/catalog/<string:item_title>/edit')
-def showCategory(item_title):
-	return "Edit {}".format(item_title)
+# Edit track
+@app.route('/catalog/<string:artist_name>/<string:track_title>/edit')
+def showCategory(artist_id, track_title):
+	return "Edit {}".format(track_title)
 
-# Delete item
-@app.route('/catalog/<string:item_title>/delete')
-def deleteCategory(item_title):
-	return "Delete {}".format(item_title)
+# Delete track
+@app.route('/catalog/<string:artist_name>/<string:track_title>/delete')
+def deleteCategory(artist_id, track_title):
+	return "Delete {}".format(track_title)
 
+# JSON API to view the catalog
 @app.route('/catalog.json')
-def categoriesJSON():
-	return "JSON"
+def artistsJSON():
+	artists = session.query(Artist).all()
+	artists_tup=[]
+	for artist in artists:
+		tracks = session.query(Track).filter_by(artist_id = artist.id).all()
+		tracks_tup = artist.serialize
+		tracks_tupA = []
+		for track in tracks:
+			tracks_tupA.append(track.serialize)
+		tracks_tup['Tracks']=tracks_tupA
+		artists_tup.append(tracks_tup)
+	return jsonify(Artists = artists_tup)
 
 if __name__ == '__main__':
   app.secret_key = '88040422507vryyo'
