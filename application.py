@@ -14,33 +14,42 @@ session = DBSession()
 
 # Show the artists and latest tracks
 @app.route('/')
-def showArtist():
-	return "main page"
+def showArtists():
+	artists = session.query(Artist).all()
+	return render_template('catalog.html', artists = artists)
 
 # Show the tracks available for an artist
 @app.route('/catalog/<string:artist_name>/tracks')
-def showItems(artist_name):
-	return "Items in {}".format(artist_name)
+def showTracks(artist_name):
+	artist = session.query(Artist).filter_by(name = artist_name).one()
+	tracks = session.query(Track).filter_by(artist_id = artist.id).all()
+	return render_template('tracks.html', tracks = tracks, artist = artist)
 
 # Show the information of a track
 @app.route('/catalog/<string:artist_name>/<string:track_title>')
-def showItem(artist_name, track_title):
-	return "{} in {}".format(track_title,artist_name)
+def showTrack(artist_name, track_title):
+	artist = session.query(Artist).filter_by(name = artist_name).one()
+	track = session.query(Track).filter_by(artist_id = artist.id, title = track_title).one()
+	return render_template('track.html', track = track, artist = artist)
+
+# Edit track
+@app.route('/catalog/<int:artist_id>/<int:track_id>/edit')
+def editTrack(artist_id, track_id):
+	artist = session.query(Artist).filter_by(id = artist_id).one()
+	track = session.query(Track).filter_by(id = track_id).one()
+	return render_template('edittrack.html', track = track, artist = artist)
+
+# Delete track
+@app.route('/catalog/<int:artist_id>/<int:track_id>/delete')
+def deleteTrack(artist_id, track_id):
+	artist = session.query(Artist).filter_by(id = artist_id).one()
+	track = session.query(Track).filter_by(id = track_id).one()
+	return render_template('deletetrack.html', track = track, artist = artist)
 
 # Add track
 @app.route('/catalog/add')
-def addItem():
-	return "Add Item"
-
-# Edit track
-@app.route('/catalog/<string:artist_name>/<string:track_title>/edit')
-def showCategory(artist_id, track_title):
-	return "Edit {}".format(track_title)
-
-# Delete track
-@app.route('/catalog/<string:artist_name>/<string:track_title>/delete')
-def deleteCategory(artist_id, track_title):
-	return "Delete {}".format(track_title)
+def addTrack():
+	return render_template('addtrack.html')
 
 # JSON API to view the catalog
 @app.route('/catalog.json')
