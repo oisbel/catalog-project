@@ -1,1 +1,46 @@
-Track
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+	<div class="row divider green">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row banner menu">
+		<div class="col-md-11 col-md-offset-1 padding-none">
+			<h1>{{ artist.name }}
+			</h1>
+
+		</div>
+	</div>
+
+<div class = 'flash'>
+		      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          
+        <ul>
+        {% for message in messages %}
+            <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+</div>
+	
+	{% if track %}	
+		<div class="row">
+			<div class="col-md-1"></div>
+			<div class="col-md-3">
+				<h4>{{track.title}}</h4>																
+			</div>
+			<a href="{{url_for('editTrack',artist_id = artist.id, track_id=track.id)}}">Edit</a>
+			<a href="{{url_for('deleteTrack',artist_id = artist.id, track_id=track.id)}}">Delete</a>
+			<div class="col-md-6">
+				<p>{{track.lyrics}}</p>
+			</div>
+			<div class="col-md-1">
+				<p>{{track.video}}</p>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+	{% endif %}
+{% endblock %}
