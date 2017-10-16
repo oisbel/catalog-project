@@ -33,23 +33,50 @@ def showTrack(artist_name, track_title):
 	return render_template('track.html', track = track, artist = artist)
 
 # Edit track
-@app.route('/catalog/<int:artist_id>/<int:track_id>/edit')
+@app.route('/catalog/<int:artist_id>/<int:track_id>/edit', methods = ['GET','POST'])
 def editTrack(artist_id, track_id):
 	artist = session.query(Artist).filter_by(id = artist_id).one()
 	track = session.query(Track).filter_by(id = track_id).one()
-	return render_template('edittrack.html', track = track, artist = artist)
+
+	if request.method == 'POST':
+		if request.form['title']:
+			track.title = request.form['title']
+		if request.form['lyrics']:
+			track.lyrics = request.form['lyrics']
+		if request.form['video']:
+			track.video = request.form['video']
+		session.add(track)
+		session.commit()
+		flash("Track Successfully Edited")
+		return redirect(url_for('showTrack', artist_name = artist.name, track_title = track.title))
+	else:
+		return render_template('edittrack.html', track = track, artist = artist)
 
 # Delete track
-@app.route('/catalog/<int:artist_id>/<int:track_id>/delete')
+@app.route('/catalog/<int:artist_id>/<int:track_id>/delete', methods = ['GET','POST'])
 def deleteTrack(artist_id, track_id):
 	artist = session.query(Artist).filter_by(id = artist_id).one()
 	track = session.query(Track).filter_by(id = track_id).one()
-	return render_template('deletetrack.html', track = track, artist = artist)
+	if request.method == 'POST':
+		session.delete(track)
+		session.commit()
+		flash("Track Successfully Deleted")
+		return redirect(url_for('showTracks', artist_name = artist.name))
+	else:
+		return render_template('deletetrack.html', track = track, artist = artist)
 
 # Add track
-@app.route('/catalog/add')
-def addTrack():
-	return render_template('addtrack.html')
+@app.route('/catalog/<int:artist_id>/add', methods = ['GET','POST'])
+def addTrack(artist_id):
+	artist=session.query(Artist).filter_by(id=artist_id).one()
+	if request.method == 'POST':
+		newTrack = Track(title = request.form['title'], lyrics = request.form['lyrics'],
+			video = request.form['video'], artist_id = artist_id, user_id = 1)
+		session.add(newTrack)
+		session.commit()
+		flash("{} Successfully Added".format(newTrack.title))
+		return redirect(url_for('showTracks', artist_name = artist.name))
+	return render_template('addtrack.html', artist = artist)
 
 # JSON API to view the catalog
 @app.route('/catalog.json')
