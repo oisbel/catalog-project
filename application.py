@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect,jsonify, url_for, flash
 
-from sqlalchemy import create_engine, asc
+from sqlalchemy import create_engine, asc, desc
 from sqlalchemy.orm import sessionmaker
 from database import Base, User, Artist, Track
 
@@ -16,7 +16,14 @@ session = DBSession()
 @app.route('/')
 def showArtists():
 	artists = session.query(Artist).all()
-	return render_template('catalog.html', artists = artists)
+	count = session.query(Artist).count()
+	# latest track added
+	tracks = session.query(Track).order_by(desc(Track.id)).limit(count).all()
+	# list of list of track,artist
+	latest = []
+	for track in tracks:
+		latest.append([session.query(Artist).filter_by(id = track.artist_id).one().name, track.title])
+	return render_template('catalog.html', artists = artists, latest = latest)
 
 # Show the tracks available for an artist
 @app.route('/catalog/<string:artist_name>/tracks')
