@@ -89,16 +89,36 @@ def addTrack(artist_id):
 @app.route('/catalog.json')
 def artistsJSON():
 	artists = session.query(Artist).all()
-	artists_tup=[]
+	# List of dictionaries(tracks_tup)
+	artists_list = []
 	for artist in artists:
 		tracks = session.query(Track).filter_by(artist_id = artist.id).all()
-		tracks_tup = artist.serialize
-		tracks_tupA = []
+		# Dictionary of one item (tracks, List_of_Tracks)
+		tracks_dicc = artist.serialize
+		# List of the tracks's dictionary
+		tracks_listAux = []
 		for track in tracks:
-			tracks_tupA.append(track.serialize)
-		tracks_tup['Tracks']=tracks_tupA
-		artists_tup.append(tracks_tup)
-	return jsonify(Artists = artists_tup)
+			tracks_listAux.append(track.serialize)
+		tracks_dicc['Tracks'] = tracks_listAux
+		artists_list.append(tracks_dicc)
+	return jsonify(Artists = artists_list)
+
+# JSON API to view the tracks for an artist
+@app.route('/catalog/<string:artist_name>/JSON')
+def tracksJSON(artist_name):
+	artist = session.query(Artist).filter_by(name = artist_name).one()
+	tracks = session.query(Track).filter_by(artist_id = artist.id).all()
+	tracks_list = []
+	for track in tracks:
+		tracks_list.append(track.serialize)
+	return jsonify(Tracks = tracks_list)
+
+# JSON API to view an specify track
+@app.route('/catalog/<string:artist_name>/<string:track_title>/JSON')
+def trackJSON(artist_name, track_title):
+	artist = session.query(Artist).filter_by(name = artist_name).one()
+	track = session.query(Track).filter_by(artist_id = artist.id, title = track_title).one()
+	return jsonify(Track = track.serialize)
 
 if __name__ == '__main__':
   app.secret_key = '88040422507vryyo'
