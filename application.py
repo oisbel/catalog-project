@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect,jsonify, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import jsonify
 
 # For database
 from sqlalchemy import create_engine, asc, desc
@@ -24,7 +25,7 @@ APPLICATION_NAME = "Catalog App"
 
 app = Flask(__name__)
 
-#Connect to Database and create database session
+# Connect to Database and create database session
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
@@ -33,11 +34,12 @@ session = DBSession()
 
 @app.route('/login')
 def showLogin():
-	# Create anti-forgery state token and store in the sesion for later validation
+	# Anti-forgery state token and store in the sesion for later validation
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
     return render_template('login.html', STATE=state)
+
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -54,12 +56,13 @@ def gconnect():
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
-        response = make_response(json.dumps('Failed to upgrade the authorization code.'), 401)
+        response = make_response(
+            json.dumps('Failed to upgrade the authorization code.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     # Check that the access token inside of it is valid sending it to google
     access_token = credentials.access_token
-    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'% access_token)
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
     # If there was an error in the access token info, abort.
@@ -70,12 +73,14 @@ def gconnect():
     # Verify that the access token is used for the intended user.
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
-        response = make_response(json.dumps("Token's user ID doesn't match given user ID."), 401)
+        response = make_response(
+            json.dumps("Token's user ID doesn't match given user ID."), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     # Similary verify that the access token is valid for this app.
     if result['issued_to'] != CLIENT_ID:
-        response = make_response(json.dumps("Token's client ID does not match app's."), 401)
+        response = make_response(
+            json.dumps("Token's client ID does not match app's."), 401)
         print "Token's client ID does not match app's."
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -83,7 +88,8 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),200)
+        response = make_response(
+            json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
     # If all the verifications are good mean the user can successfully log in
@@ -115,13 +121,15 @@ def gconnect():
     print "Successfully login!"
     return output
 
+
 # DISCONNECT - Revoke a current user's token and reset their login_session
 @app.route('/gdisconnect')
 def gdisconnect():
     access_token = login_session.get('access_token')
     if access_token is None:
         print 'Access Token is None'
-        response = make_response(json.dumps('Current user not connected.'), 401)
+        response = make_response(
+            json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
@@ -139,22 +147,26 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(
+            json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
-# User Helper Functions
 
+# User Helper Functions
 def createUser(login_session):
-    newUser = User(name=login_session['username'], email=login_session['email'])
+    newUser = User(
+        name=login_session['username'], email=login_session['email'])
     session.add(newUser)
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
     return user.id
 
+
 def getUserInfo(user_id):
     user = session.query(User).filter_by(id=user_id).one()
     return user
+
 
 def getUserID(email):
     try:
@@ -162,6 +174,7 @@ def getUserID(email):
         return user.id
     except:
         return None
+
 
 # Show the artists and latest tracks
 @app.route('/')
@@ -173,37 +186,48 @@ def showArtists():
     # list of list of track,artist
     latest = []
     for track in tracks:
-        latest.append([session.query(Artist).filter_by(id = track.artist_id).one().name, track.title])
-    return render_template('catalog.html', artists = artists, latest = latest)
+        latest.append([session.query(Artist).filter_by(
+            id=track.artist_id).one().name, track.title])
+    return render_template(
+        'catalog.html', artists=artists, latest=latest)
+
 
 # Show the tracks available for an artist
 @app.route('/catalog/<string:artist_name>/tracks')
 def showTracks(artist_name):
-    artist = session.query(Artist).filter_by(name = artist_name).one()
-    tracks = session.query(Track).filter_by(artist_id = artist.id).all()
+    artist = session.query(Artist).filter_by(name=artist_name).one()
+    tracks = session.query(Track).filter_by(artist_id=artist.id).all()
     if 'username' not in login_session:
-        return render_template('publictracks.html', tracks = tracks, artist = artist)
+        return render_template(
+            'publictracks.html', tracks=tracks, artist=artist)
     else:
-        return render_template('tracks.html', tracks = tracks, artist = artist)
+        return render_template(
+            'tracks.html', tracks=tracks, artist=artist)
+
 
 # Show the information of a track
 @app.route('/catalog/<string:artist_name>/<string:track_title>')
 def showTrack(artist_name, track_title):
-    artist = session.query(Artist).filter_by(name = artist_name).one()
-    track = session.query(Track).filter_by(artist_id = artist.id, title = track_title).one()
+    artist = session.query(Artist).filter_by(name=artist_name).one()
+    track = session.query(Track).filter_by(
+        artist_id=artist.id, title=track_title).one()
     creator = getUserInfo(track.user_id)
-    if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('publictrack.html', track = track, artist = artist)
+    if ('username' not in login_session or
+            creator.id != login_session['user_id']):
+        return render_template(
+            'publictrack.html', track=track, artist=artist)
     else:
-        return render_template('track.html', track = track, artist = artist)
+        return render_template(
+            'track.html', track=track, artist=artist)
+
 
 # Edit track
-@app.route('/catalog/<int:artist_id>/<int:track_id>/edit', methods = ['GET','POST'])
+@app.route('/catalog/<int:artist_id>/<int:track_id>/edit', methods=['GET', 'POST'])
 def editTrack(artist_id, track_id):
     if 'username' not in login_session:
         return redirect('/login')
-    artist = session.query(Artist).filter_by(id = artist_id).one()
-    track = session.query(Track).filter_by(id = track_id).one()
+    artist = session.query(Artist).filter_by(id=artist_id).one()
+    track = session.query(Track).filter_by(id=track_id).one()
     # in case the user try to access via url
     if track.user_id != login_session['user_id']:
         return "<script>function myFunction(){alert('You are not authorized to edit this track.');}</script><body onload = 'myFunction()'>"
@@ -217,41 +241,49 @@ def editTrack(artist_id, track_id):
         session.add(track)
         session.commit()
         flash("Track Successfully Edited")
-        return redirect(url_for('showTrack', artist_name = artist.name, track_title = track.title))
+        return redirect(url_for(
+            'showTrack', artist_name=artist.name, track_title=track.title))
     else:
-        return render_template('edittrack.html', track = track, artist = artist)
+        return render_template(
+            'edittrack.html', track=track, artist=artist)
+
 
 # Delete track
-@app.route('/catalog/<int:artist_id>/<int:track_id>/delete', methods = ['GET','POST'])
+@app.route('/catalog/<int:artist_id>/<int:track_id>/delete', methods=['GET', 'POST'])
 def deleteTrack(artist_id, track_id):
     if 'username' not in login_session:
         return redirect('/login')
-    artist = session.query(Artist).filter_by(id = artist_id).one()
-    track = session.query(Track).filter_by(id = track_id).one()
+    artist = session.query(Artist).filter_by(id=artist_id).one()
+    track = session.query(Track).filter_by(id=track_id).one()
     if track.user_id != login_session['user_id']:
         return "<script>function myFunction(){alert('You are not authorized to delete this track.');}</script><body onload = 'myFunction()'>"
     if request.method == 'POST':
         session.delete(track)
         session.commit()
         flash("Track Successfully Deleted")
-        return redirect(url_for('showTracks', artist_name = artist.name))
+        return redirect(url_for('showTracks', artist_name=artist.name))
     else:
-        return render_template('deletetrack.html', track = track, artist = artist)
+        return render_template(
+            'deletetrack.html', track=track, artist=artist)
+
 
 # Add track
-@app.route('/catalog/<int:artist_id>/add', methods = ['GET','POST'])
+@app.route('/catalog/<int:artist_id>/add', methods=['GET', 'POST'])
 def addTrack(artist_id):
     if 'username' not in login_session:
         return redirect('/login')
-    artist=session.query(Artist).filter_by(id=artist_id).one()
+    artist = session.query(Artist).filter_by(id=artist_id).one()
     if request.method == 'POST':
-        newTrack = Track(title = request.form['title'], lyrics = request.form['lyrics'],
-            video = request.form['video'], artist_id = artist_id, user_id = login_session['user_id'])
+        newTrack = Track(
+            title=request.form['title'], lyrics=request.form['lyrics'],
+            video=request.form['video'], artist_id=artist_id,
+            user_id=login_session['user_id'])
         session.add(newTrack)
         session.commit()
         flash("{} Successfully Added".format(newTrack.title))
-        return redirect(url_for('showTracks', artist_name = artist.name))
-    return render_template('addtrack.html', artist = artist)
+        return redirect(url_for('showTracks', artist_name=artist.name))
+    return render_template('addtrack.html', artist=artist)
+
 
 # JSON API to view the catalog
 @app.route('/catalog.json')
@@ -260,7 +292,7 @@ def artistsJSON():
     # List of dictionaries(tracks_tup)
     artists_list = []
     for artist in artists:
-        tracks = session.query(Track).filter_by(artist_id = artist.id).all()
+        tracks = session.query(Track).filter_by(artist_id=artist.id).all()
         # Dictionary of one item (tracks, List_of_Tracks)
         tracks_dicc = artist.serialize
         # List of the tracks's dictionary
@@ -269,26 +301,30 @@ def artistsJSON():
             tracks_listAux.append(track.serialize)
         tracks_dicc['Tracks'] = tracks_listAux
         artists_list.append(tracks_dicc)
-    return jsonify(Artists = artists_list)
+    return jsonify(Artists=artists_list)
+
 
 # JSON API to view the tracks for an artist
 @app.route('/catalog/<string:artist_name>/JSON')
 def tracksJSON(artist_name):
-    artist = session.query(Artist).filter_by(name = artist_name).one()
-    tracks = session.query(Track).filter_by(artist_id = artist.id).all()
+    artist = session.query(Artist).filter_by(name=artist_name).one()
+    tracks = session.query(Track).filter_by(artist_id=artist.id).all()
     tracks_list = []
     for track in tracks:
         tracks_list.append(track.serialize)
-    return jsonify(Tracks = tracks_list)
+    return jsonify(Tracks=tracks_list)
+
 
 # JSON API to view an specify track
 @app.route('/catalog/<string:artist_name>/<string:track_title>/JSON')
 def trackJSON(artist_name, track_title):
-    artist = session.query(Artist).filter_by(name = artist_name).one()
-    track = session.query(Track).filter_by(artist_id = artist.id, title = track_title).one()
-    return jsonify(Track = track.serialize)
+    artist = session.query(Artist).filter_by(name=artist_name).one()
+    track = session.query(Track).filter_by(
+        artist_id=artist.id, title=track_title).one()
+    return jsonify(Track=track.serialize)
+
 
 if __name__ == '__main__':
     app.secret_key = '88040422507vryyo'
     app.debug = True
-    app.run(host = '0.0.0.0', port = 8000)
+    app.run(host='0.0.0.0', port=8000)

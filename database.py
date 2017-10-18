@@ -13,6 +13,7 @@ class User(Base):
     name = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
 
+
 class Artist(Base):
     __tablename__ = 'artist'
 
