@@ -144,6 +144,7 @@ def gdisconnect():
         return response
 
 # User Helper Functions
+
 def createUser(login_session):
     newUser = User(name=login_session['username'], email=login_session['email'])
     session.add(newUser)
@@ -180,14 +181,21 @@ def showArtists():
 def showTracks(artist_name):
     artist = session.query(Artist).filter_by(name = artist_name).one()
     tracks = session.query(Track).filter_by(artist_id = artist.id).all()
-    return render_template('tracks.html', tracks = tracks, artist = artist)
+    if 'username' not in login_session:
+        return render_template('publictracks.html', tracks = tracks, artist = artist)
+    else:
+        return render_template('tracks.html', tracks = tracks, artist = artist)
 
 # Show the information of a track
 @app.route('/catalog/<string:artist_name>/<string:track_title>')
 def showTrack(artist_name, track_title):
     artist = session.query(Artist).filter_by(name = artist_name).one()
     track = session.query(Track).filter_by(artist_id = artist.id, title = track_title).one()
-    return render_template('track.html', track = track, artist = artist)
+    creator = getUserInfo(track.user_id)
+    if 'username' not in login_session or creator.id != login_session['user_id']:
+        return render_template('publictrack.html', track = track, artist = artist)
+    else:
+        return render_template('track.html', track = track, artist = artist)
 
 # Edit track
 @app.route('/catalog/<int:artist_id>/<int:track_id>/edit', methods = ['GET','POST'])
@@ -196,6 +204,9 @@ def editTrack(artist_id, track_id):
         return redirect('/login')
     artist = session.query(Artist).filter_by(id = artist_id).one()
     track = session.query(Track).filter_by(id = track_id).one()
+    # in case the user try to access via url
+    if track.user_id != login_session['user_id']:
+        return "<script>function myFunction(){alert('You are not authorized to edit this track.');}</script><body onload = 'myFunction()'>"
     if request.method == 'POST':
         if request.form['title']:
             track.title = request.form['title']
@@ -217,6 +228,8 @@ def deleteTrack(artist_id, track_id):
         return redirect('/login')
     artist = session.query(Artist).filter_by(id = artist_id).one()
     track = session.query(Track).filter_by(id = track_id).one()
+    if track.user_id != login_session['user_id']:
+        return "<script>function myFunction(){alert('You are not authorized to delete this track.');}</script><body onload = 'myFunction()'>"
     if request.method == 'POST':
         session.delete(track)
         session.commit()
