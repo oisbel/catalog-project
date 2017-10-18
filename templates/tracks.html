@@ -29,7 +29,7 @@
 		<div class="col-md-1"></div>
 		<div class="col-md-11 padding-none">
 			<a href="{{url_for('addTrack',artist_id = artist.id)}}">
-				<button class="btn btn-default" id="new-menu-item">
+				<button class="btn btn-default" id="new-track-item">
 					<span class="glyphicon glyphicon-music" aria-hidden="true"></span>Add Track
 				</button>
 		</div>
@@ -41,7 +41,7 @@
 		<div class="row">
 			<div class="col-md-1"></div>
 			<div class="col-md-3">					
-							<div class="menu-item">
+							<div class="track-item">
 								<a href="{{url_for('showTrack',artist_name = artist.name, track_title=track.title)}}">
 								<h3>{{track.title}}</h3>																
 								</a>

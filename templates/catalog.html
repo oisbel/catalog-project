@@ -13,7 +13,7 @@
 		<div class="col-md-6 padding-none">
 			<h2>Artists</h2>
 			{% for artist in artists %}
-			<a href = "{{url_for('showTracks', artist_name = artist.name)}}">
+			<a class="artist-list" href = "{{url_for('showTracks', artist_name = artist.name)}}">
 			<div class="row">					
 				<h4>{{artist.name}}</h4>
 			</div>
