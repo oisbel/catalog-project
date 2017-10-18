@@ -207,22 +207,23 @@ def showTrack(artist_name, track_title):
 # Edit track
 @app.route('/catalog/<int:artist_id>/<int:track_id>/edit', methods = ['GET','POST'])
 def editTrack(artist_id, track_id):
-	artist = session.query(Artist).filter_by(id = artist_id).one()
-	track = session.query(Track).filter_by(id = track_id).one()
-
-	if request.method == 'POST':
-		if request.form['title']:
-			track.title = request.form['title']
-		if request.form['lyrics']:
-			track.lyrics = request.form['lyrics']
-		if request.form['video']:
-			track.video = request.form['video']
-		session.add(track)
-		session.commit()
-		flash("Track Successfully Edited")
-		return redirect(url_for('showTrack', artist_name = artist.name, track_title = track.title))
-	else:
-		return render_template('edittrack.html', track = track, artist = artist)
+    if 'username' not in login_session:
+        return redirect('/login')
+    artist = session.query(Artist).filter_by(id = artist_id).one()
+    track = session.query(Track).filter_by(id = track_id).one()
+    if request.method == 'POST':
+        if request.form['title']:
+            track.title = request.form['title']
+        if request.form['lyrics']:
+            track.lyrics = request.form['lyrics']
+        if request.form['video']:
+            track.video = request.form['video']
+        session.add(track)
+        session.commit()
+        flash("Track Successfully Edited")
+        return redirect(url_for('showTrack', artist_name = artist.name, track_title = track.title))
+    else:
+        return render_template('edittrack.html', track = track, artist = artist)
 
 # Delete track
 @app.route('/catalog/<int:artist_id>/<int:track_id>/delete', methods = ['GET','POST'])
