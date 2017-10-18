@@ -36,11 +36,11 @@
 		<div class="col-md-7"></div>
 	</div>
 	
-	{% if tracks !=[] %}	
+	{% if tracks !=[] %}
+		{% for track in tracks %}
 		<div class="row">
 			<div class="col-md-1"></div>
-			<div class="col-md-3">
-					{% for track in tracks %}
+			<div class="col-md-3">					
 							<div class="menu-item">
 								<a href="{{url_for('showTrack',artist_name = artist.name, track_title=track.title)}}">
 								<h3>{{track.title}}</h3>																

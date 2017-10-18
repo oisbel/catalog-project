@@ -28,12 +28,13 @@
 	
 	{% if track %}	
 		<div class="row">
-			<div class="col-md-1"></div>
-			<div class="col-md-3">
-				<h4>{{track.title}}</h4>																
-			</div>
+			<div class="col-md-1">
 			<a href="{{url_for('editTrack',artist_id = artist.id, track_id=track.id)}}">Edit</a>
 			<a href="{{url_for('deleteTrack',artist_id = artist.id, track_id=track.id)}}">Delete</a>
+			</div>
+			<div class="col-md-3">
+				<h4>{{track.title}}</h4>																
+			</div>			
 			<div class="col-md-6">
 				<p>{{track.lyrics}}</p>
 			</div>
