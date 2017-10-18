@@ -12,29 +12,23 @@
 	<div class="row banner main">		
 		<div class="col-md-6 padding-none">
 			<h2>Artists</h2>
+			{% for artist in artists %}
+			<a href = "{{url_for('showTracks', artist_name = artist.name)}}">
+			<div class="row">					
+				<h4>{{artist.name}}</h4>
+			</div>
+			</a>
+			{% endfor %}
 		</div>
 		<div class="col-md-6 padding-none">
 			<h2>Latest Tracks</h2>
-		</div>
-	</div>
-	<div class="row">
-	<div class="col-md-6">
-	{% for artist in artists %}
-		<a href = "{{url_for('showTracks', artist_name = artist.name)}}">
-			<div class="row">					
-				<h3>{{artist.name}}</h3>
-			</div>
-		</a>
-	{% endfor %}
-	</div>
-	<div class="col-md-6">
-	{% for last in latest %}
-		<a href = "{{url_for('showTrack', artist_name = last[0], track_title=last[1])}}">
+			{% for last in latest %}
+			<a href = "{{url_for('showTrack', artist_name = last[0], track_title=last[1])}}">
 			<div class="row">					
 				<h4>{{last[1]}} ( {{last[0]}})</h4>
 			</div>
-		</a>
-	{% endfor %}
-	</div>
+			</a>
+			{% endfor %}
+		</div>
 	</div>
 {% endblock %}
