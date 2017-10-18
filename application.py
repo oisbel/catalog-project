@@ -246,7 +246,7 @@ def addTrack(artist_id):
     artist=session.query(Artist).filter_by(id=artist_id).one()
     if request.method == 'POST':
         newTrack = Track(title = request.form['title'], lyrics = request.form['lyrics'],
-            video = request.form['video'], artist_id = artist_id, user_id = 1)
+            video = request.form['video'], artist_id = artist_id, user_id = login_session['user_id'])
         session.add(newTrack)
         session.commit()
         flash("{} Successfully Added".format(newTrack.title))
