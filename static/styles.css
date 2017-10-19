@@ -1,10 +1,19 @@
 * {
-	font-family: "Helvetica Neue Bold", Roboto, Helvetica, Arial, sans-serif;
+	box-sizing: border-box;
+	font-family: 'Lato', sans-serif, Arial, sans-serif;
 	font-weight: 700;
 }
 
+body {
+	margin-top: 5px;
+	margin-right: 50px;
+	margin-bottom: 35px;
+	margin-left: 50px;
+	/*background: #C1E1A6;*/
+}
+
 h1 {
-	font-family: "Helvetica Neue Light", Roboto, Helvetica, Arial, sans-serif;
+	font-family: 'Lato', sans-serif, Arial, sans-serif;
 	font-size: 50px;
 	color: #51453B;
 	line-height: 60px;
@@ -13,7 +22,7 @@ h1 {
 
 h2 {
 	font-size: 24px;
-	color: #42C3C9;
+	color: #1d1d1d;
 	line-height: 29px;
 }
 
@@ -23,7 +32,7 @@ h3 {
 	line-height: 23px;
 }
  p {
- 	font-family: "Helvetica Neue", Roboto, Helvetica, Arial, sans-serif;
+ 	font-family: 'Lato', sans-serif, Arial, sans-serif;
  	font-size: 16px;
  	color: #7B7573;
  	line-height: 24px;
@@ -40,6 +49,8 @@ h3 {
  	font-size: 14px;
  	color: #0093B9;
  	line-height: 17px;
+	margin-left: 5px;
+	margin-right: 5px;
  }
 .padding-top {
 	padding-top: 30px;
@@ -54,14 +65,15 @@ h3 {
 	padding: 0;
 }
 .btn {
-	padding: 20px;
-	margin: 0;
-	border-color: #9FB80A;
+	padding: 10px;
+	margin: 5px;
+	border-color: #909090;
 	border-width: 2px;
-	color: #9FB80A;;
+	color: #9FB80A;
+	float: left;
 }
 .btn:hover {
-	border-color: #9FB80A;
+	border-color: #646464;
 }
 .btn.delete {
 	border-color: #aaaaaa;
@@ -90,24 +102,21 @@ h3 {
 	font-weight: 400;
 }
 .divider {
-	height: 15px;
+	height: 10px;
 }
 .divider.blue {
-	background-color: #42C3C9;
-}
-.divider.green {
-	background-color: #9FB80A;
+	background-color: #006871;
 }
 .banner.main {
 	height: 150px;
 	background: url("/static/top-banner.png");
-	background-position: right;
+	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
 }
-.banner.menu {
-	height: 150px;
-	background-color: #E1E17F;
+.banner.artist {
+	height: auto;
+	background-color: #f3f1ff;
 }
 .banner.profile {
 	height: 150px;
@@ -117,18 +126,29 @@ h3 {
 	margin: 45px 0;
 }
  .artist-list {
- 	background-color: #F0F0F0;
- 	padding: 20px;
-u }
- .artist-list:hover {
- 	background-color: #e1e17f;
- 	padding: 20px;
+ 	padding-left: 20px;
+	margin-left: -20px;
 }
 .track-item {
 	background: #F0F0F0;
-	padding: 20px;
+	padding-left: 20px;
 	margin: 20px;
 	margin-left: -20px;
+}
+.lyrics-description {
+	overflow:hidden;
+	height: 100px;
+	margin-top: 20px;
+}
+.lyrics {
+	white-space: pre;
+	text-align: center;
+}
+.text-center {
+	text-align:center;
+}
+.delete-margin {
+	margin-top: 80px;
 }
 .creator {
 	padding-right: 20px;

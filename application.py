@@ -216,12 +216,15 @@ def showTrack(artist_name, track_title):
     if ('username' not in login_session or
             creator.id != login_session['user_id']):
         return render_template(
-            'publictrack.html', track=track, artist=artist)
+            'publictrack.html', track=track, artist=artist, video=embedVideo(track.video))
     else:
         return render_template(
-            'track.html', track=track, artist=artist)
+            'track.html', track=track, artist=artist, video=embedVideo(track.video))
 
 
+# Embed youtube video
+def embedVideo(url):
+    return url.replace("watch?v=","embed/")
 # Edit track
 @app.route('/catalog/<int:artist_id>/<int:track_id>/edit', methods=['GET', 'POST'])
 def editTrack(artist_id, track_id):

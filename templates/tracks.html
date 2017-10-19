@@ -1,16 +1,20 @@
 {% extends "main.html" %}
 {% block content %}
 {% include "header.html" %}
-	<div class="row divider green">
-		<div class="col-md-12"></div>
-	</div>
-	<div class="row banner menu">
-		<div class="col-md-11 col-md-offset-1 padding-none">
-			<h1>{{ artist.name }}
-			</h1>
-
+	<div class="row divider"></div>
+	<div class="row banner artist">
+		<div class="col-md-5 col-md-offset-1 padding-none">
+			<picture>
+				<img src={{ artist.picture }} alt="Artist Photo"
+					title={{ artist.name }}>
+			</picture>
 		</div>
-	</div>
+		<div class="col-md-5">
+		<h1>{{ artist.name }}</h1>
+		</div>
+		<div class="col-md-2"></div>
+		
+	</div>	
 
 <div class = 'flash'>
 		      {% with messages = get_flashed_messages() %}
@@ -29,9 +33,10 @@
 		<div class="col-md-1"></div>
 		<div class="col-md-11 padding-none">
 			<a href="{{url_for('addTrack',artist_id = artist.id)}}">
-				<button class="btn btn-default" id="new-track-item">
+				<button class="btn btn-default">
 					<span class="glyphicon glyphicon-music" aria-hidden="true"></span>Add Track
 				</button>
+			</a>
 		</div>
 		<div class="col-md-7"></div>
 	</div>
@@ -40,17 +45,16 @@
 		{% for track in tracks %}
 		<div class="row">
 			<div class="col-md-1"></div>
-			<div class="col-md-3">					
+			<div class="col-md-3">
 							<div class="track-item">
 								<a href="{{url_for('showTrack',artist_name = artist.name, track_title=track.title)}}">
-								<h3>{{track.title}}</h3>																
+								<h2 class="glyphicon glyphicon-music"> {{track.title}}</h2>																
 								</a>
 							</div>						
 			</div>
-			<div class="col-md-6">
-				<p>{{track.video}}</p>
+			<div class="col-md-7">
+				<label class="lyrics-description">{{track.lyrics}}</label>
 			</div>
-			<div class="col-md-1"></div>
 			<div class="col-md-1"></div>
 		</div>
 		{% endfor %}

@@ -1,16 +1,16 @@
 {% extends "main.html" %}
 {% block content %}
 {% include "header.html" %}
-	<div class="row divider green">
+	<div class="row divider">
 		<div class="col-md-12"></div>
 	</div>
 	<div class="row banner menu">
-		<div class="col-md-11 col-md-offset-1 padding-none">
+		<div class="col-md-6 col-md-offset-1 padding-none">
 			<a href = "{{url_for('showTracks', artist_name = artist.name)}}">
-			<h3>{{ artist.name }}</h3>
-			</a>
+			<h2>{{ artist.name }}</h2>
+			</a>			
 		</div>
-	</div>
+	</div>	
 
 <div class = 'flash'>
 		      {% with messages = get_flashed_messages() %}
@@ -25,23 +25,28 @@
     {% endwith %}
 
 </div>
-	
+	<div>
+		<a href="{{url_for('editTrack',artist_id = artist.id, track_id=track.id)}}">
+			<button class="btn btn-default">
+				<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>Edit
+			</button>
+		</a>
+		<a href="{{url_for('deleteTrack',artist_id = artist.id, track_id=track.id)}}">
+		<button class="btn btn-default">
+				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Delete
+			</button>
+		</a>
 	{% if track %}	
 		<div class="row">
-			<div class="col-md-1">
-			<a href="{{url_for('editTrack',artist_id = artist.id, track_id=track.id)}}">Edit</a>
-			<a href="{{url_for('deleteTrack',artist_id = artist.id, track_id=track.id)}}">Delete</a>
-			</div>
-			<div class="col-md-3">
-				<h4>{{track.title}}</h4>																
-			</div>			
 			<div class="col-md-6">
-				<p>{{track.lyrics}}</p>
+				<h3 class="text-center">{{ track.title }}</h3>
+				<p class="lyrics">{{track.lyrics}}</p>				
 			</div>
-			<div class="col-md-1">
-				<p>{{track.video}}</p>
+			<div class="col-md-6">
+			<iframe width="420" height="315"
+				src="{{video}}">
+				</iframe>
 			</div>
-			<div class="col-md-1"></div>
 		</div>
 	{% endif %}
 {% endblock %}
