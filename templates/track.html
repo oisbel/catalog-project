@@ -25,17 +25,18 @@
     {% endwith %}
 
 </div>
-	<div>
-		<a href="{{url_for('editTrack',artist_id = artist.id, track_id=track.id)}}">
-			<button class="btn btn-default">
-				<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>Edit
-			</button>
-		</a>
-		<a href="{{url_for('deleteTrack',artist_id = artist.id, track_id=track.id)}}">
+<div class="row">
+	<a href="{{url_for('editTrack',artist_id = artist.id, track_id=track.id)}}">
 		<button class="btn btn-default">
-				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Delete
-			</button>
-		</a>
+			<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>Edit
+		</button>
+	</a>
+	<a href="{{url_for('deleteTrack',artist_id = artist.id, track_id=track.id)}}">
+	<button class="btn btn-default">
+			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Delete
+		</button>
+	</a>
+</div>
 	{% if track %}	
 		<div class="row">
 			<div class="col-md-6">
