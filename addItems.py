@@ -27,7 +27,7 @@ session.commit()
 # Tracks for Lauren Daigle
 artist0 = Artist(
        name="Lauren Daigle",
-       picture="http://iscale.iheart.com/v3/catalog/artist/30480349?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/fiYSQm/Lauren_Daigle.png")
 
 session.add(artist0)
 session.commit()
@@ -79,7 +79,7 @@ session.commit()
 # Tracks for Hillsong Worship
 artist1 = Artist(
        name="Hillsong Worship",
-       picture="iscale.iheart.com/v3/catalog/artist/30412158?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/n2k7Qm/Hillsong_Worship.png")
 
 session.add(artist1)
 session.commit()
@@ -109,7 +109,7 @@ session.commit()
 # Tracks for Chris tomlin
 artist2 = Artist(
        name="Chris tomlin",
-       picture="iscale.iheart.com/v3/catalog/artist/28429?ops=fit(240%2C240),run(%22circle%22)+9")
+       picture="https://image.ibb.co/ch4Z5m/Chris_tomlin.png")
 
 session.add(artist2)
 session.commit()
@@ -139,7 +139,7 @@ session.commit()
 # Tracks for Casting Crowns
 artist3 = Artist(
        name="Casting Crowns",
-       picture="iscale.iheart.com/v3/catalog/artist/89484?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/j3fkBR/Casting_Crowns.png")
 
 session.add(artist3)
 session.commit()
@@ -180,7 +180,7 @@ session.commit()
 # Tracks for MercyMe
 artist4 = Artist(
        name="MercyMe",
-       picture="iscale.iheart.com/v3/catalog/artist/90180?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/fk63y6/MercyMe.png")
 
 session.add(artist4)
 session.commit()
@@ -221,7 +221,7 @@ session.commit()
 # Tracks for for KING & COUNTRY
 artist5 = Artist(
        name="For KING & COUNTRY",
-       picture="iscale.iheart.com/v3/catalog/artist/649143?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/kPXnQm/For_KING_COUNTRY.png")
 
 session.add(artist5)
 session.commit()
@@ -273,7 +273,7 @@ session.commit()
 # Tracks for Danny Gokey
 artist6 = Artist(
        name="Danny Gokey",
-       picture="iscale.iheart.com/v3/catalog/artist/143568?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/hveCrR/Danny_Gokey.png")
 
 session.add(artist6)
 session.commit()
@@ -303,7 +303,7 @@ session.commit()
 # Tracks for skillet
 artist7 = Artist(
        name="Skillet",
-       picture="iscale.iheart.com/v3/catalog/artist/31216?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/jAXyWR/Skillet.png")
 
 session.add(artist7)
 session.commit()
@@ -355,7 +355,7 @@ session.commit()
 # Tracks for Hillary Scott & The Scott Family
 artist8 = Artist(
        name="Hillary Scott & The Scott Family",
-       picture="iscale.iheart.com/v3/catalog/artist/31192395?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/hjr3y6/Hillary_Scott_The_Scott_Family.png")
 
 session.add(artist8)
 session.commit()
@@ -385,7 +385,7 @@ session.commit()
 # Tracks for NF
 artist9 = Artist(
        name="NF",
-       picture="//iscale.iheart.com/v3/catalog/artist/958998?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/nEAVd6/NF.png")
 
 session.add(artist9)
 session.commit()
@@ -415,7 +415,7 @@ session.commit()
 # Tracks for jordan feliz
 artist10 = Artist(
        name="Jordan Feliz",
-       picture="iscale.iheart.com/v3/catalog/artist/30952018?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/iKkVd6/Jordan_Feliz.png")
 
 session.add(artist10)
 session.commit()
@@ -467,7 +467,7 @@ session.commit()
 # Tracks for tobyMac
 artist11 = Artist(
        name="TobyMac",
-       picture="http://iscale.iheart.com/v3/catalog/artist/386996?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/nnA7Qm/TobyMac.png")
 
 session.add(artist11)
 session.commit()
@@ -519,7 +519,7 @@ session.commit()
 # Tracks for Matthew West
 artist12 = Artist(
        name="Matthew West",
-       picture="iscale.iheart.com/v3/catalog/artist/33420?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/jiXbJ6/Matthew_West.png")
 
 session.add(artist12)
 session.commit()
@@ -549,7 +549,7 @@ session.commit()
 # Tracks for Francesca Battistelli
 artist13 = Artist(
        name="Francesca Battistelli",
-       picture="iscale.iheart.com/v3/catalog/artist/58911?ops=fit(240%2C240),run(%22circle%22)")
+       picture="https://image.ibb.co/naW3y6/Francesca_Battistelli.png")
 
 session.add(artist13)
 session.commit()
