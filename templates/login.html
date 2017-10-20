@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Login-Music Catalog</title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
 	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">	
 </head>
 <body>
+<div class="container">
+<div class="row top-menu banner main">
+	<div class="col-md-12">
+		<h1>Catalog</h1>
+	</div>
+</div>
 <div class="row">
 	<h1>Use your google account</h1>
 	<h1>to log on this web site</h1>
@@ -24,7 +31,7 @@
   </span>
 </div>
 </div>
-
+</div>
 <script>
 	function signInCallback(authResult) {
   if (authResult['code']) {
