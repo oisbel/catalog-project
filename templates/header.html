@@ -11,8 +11,8 @@
 	<div class="col-md-6 text-right">
 	{%if 'username' not in session %}
 		<!--<iframe class="glyphicon glyphicon-user" aria-hidden="true" src="{{url_for('showLogin')}}" frameborder="0" scrolling="no" height="40"> -->
-		<a href="{{url_for('showLogin')}}">
 		<!--<a href="javascript:void(0)" onclick="window.open('login','','width=700,height=400,noresize')">-->
+		<a href="{{url_for('showLogin')}}">
 		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>Login </a>
 		<!--</iframe>-->
 		{% else %}

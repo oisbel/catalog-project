@@ -1,5 +1,17 @@
-<div>
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">	
+</head>
+<body>
+<div class="row">
+	<h1>Use your google account</h1>
+	<h1>to log on this web site</h1>
+</div>
 <!-- GOOGLE PLUS SIGN IN BUTTON-->
+<div class="row">
 <div id="signinButton">
   <span class="g-signin"
     data-scope="openid email"
@@ -11,7 +23,7 @@
     data-approvalprompt="force">
   </span>
 </div>
-<div id="result"></div>
+</div>
 
 <script>
 	function signInCallback(authResult) {
@@ -28,7 +40,6 @@
       success: function(result) {
         // Handle or verify the server response if necessary.
         if (result) {
-          $('#result').html('Login Successful!</br>')
           window.location.href = "/";
 
       } else if (authResult['error']) {
@@ -41,8 +52,10 @@
   }); } }
 </script>
 <!--END GOOGLE PLUS SIGN IN BUTTON -->
+
 <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="//apis.google.com/js/platform.js?onload=start"></script>
 <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
-</div>
+ </body>
+ </html>
