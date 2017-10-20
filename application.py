@@ -136,13 +136,7 @@ def gdisconnect():
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
-        del login_session['gplus_id']
-        del login_session['access_token']
-        del login_session['username']
-        del login_session['email']
-        del login_session['picture']
-        del login_session['user_id']
-        del login_session['provider']
+        clearLoginSession(login_session)
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         flash("Successfully disconnected")
@@ -151,7 +145,8 @@ def gdisconnect():
         response = make_response(
             json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
-        return response
+        clearLoginSession(login_session)
+        return redirect('/')
 
 
 # User Helper Functions
@@ -176,6 +171,15 @@ def getUserID(email):
     except:
         return None
 
+
+def clearLoginSession(login_session):
+    del login_session['gplus_id']
+    del login_session['access_token']
+    del login_session['username']
+    del login_session['email']
+    del login_session['picture']
+    del login_session['user_id']
+    del login_session['provider']
 
 # Show the artists and latest tracks
 @app.route('/')
