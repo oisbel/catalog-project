@@ -229,6 +229,8 @@ def showTrack(artist_name, track_title):
 # Embed youtube video
 def embedVideo(url):
     return url.replace("watch?v=","embed/")
+
+
 # Edit track
 @app.route('/catalog/<int:artist_id>/<int:track_id>/edit', methods=['GET', 'POST'])
 def editTrack(artist_id, track_id):
@@ -313,7 +315,7 @@ def artistsJSON():
 
 
 # JSON API to view the tracks for an artist
-@app.route('/catalog/<string:artist_name>/JSON')
+@app.route('/<string:artist_name>.json')
 def tracksJSON(artist_name):
     artist = session.query(Artist).filter_by(name=artist_name).one()
     tracks = session.query(Track).filter_by(artist_id=artist.id).all()
@@ -324,7 +326,7 @@ def tracksJSON(artist_name):
 
 
 # JSON API to view an specify track
-@app.route('/catalog/<string:artist_name>/<string:track_title>/JSON')
+@app.route('/<string:artist_name>/<string:track_title>.json')
 def trackJSON(artist_name, track_title):
     artist = session.query(Artist).filter_by(name=artist_name).one()
     track = session.query(Track).filter_by(
