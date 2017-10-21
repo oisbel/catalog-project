@@ -30,6 +30,64 @@ $ python application.py
 Finally, you can access the application by visiting http://localhost:8000 locally.
 
 
+### APIs
+The application provides a JSON endpoints with the information in the database.
+- Catalog: http://localhost:8000/catalog.json
+```
+{
+  "Artists": [
+    {
+      "Tracks": [
+        {
+          "artist_id": 1,
+          "id": 1,
+          "lyrics": "Whoa...\r\n\r\nThough times it seems\r\nLike I'm coming undone
+           won\r\nI will stand my ground where hope can be found\r\nI will stand my ground
+           I know in time\r\nYou'll take all that is wrong and make it ...
+          "title": "O' Lord"
+        },
+        {
+          "artist_id": 1,
+          "id": 2,
+          "lyrics":
+          .
+          .
+          .
+```
+- Tracks for an artist: http://localhost:8000/<string:artist_name>.json
+```
+{
+  "Tracks": [
+    {
+      "artist_id": 8,
+      "id": 21,
+      "lyrics": "I'm just a step away\r\nI'm just a breath away\r\nLosin' my faith today\r\n
+       (We're fallin' off the edge today)\r\n\r\nI am just a man\r\nNot superhuman\r\n
+       Someone save me from the hate\r\n\r\nIt's just a...
+      "title": "Hero"
+    },
+    {
+      "artist_id": 8,
+      "id": 22,
+      "lyrics":
+      .
+      .
+      .
+```
+- Track: http://localhost:8000/<string:artist_name>/<string:track_title>.json
+```
+{
+  "Track": {
+    "artist_id": 1,
+    "id": 3,
+    "lyrics": "I am guilty\r\nAshamed of what I've done, what I've become\r\nThese hands are
+    You say that I am free\r\nHow can it be? Yeah\r\nHow can it be?
+    I am free\r\nHow can it be? Yeah\r\nHow can it be? Yeah"...
+    "title": "How Can It Be"
+  }
+}
+```
+
 License
 ----
 
