@@ -13,18 +13,17 @@
 		<h1>{{ artist.name }}</h1>
 		</div>
 		<div class="col-md-2"></div>
-		
 	</div>	
 	{% if tracks !=[] %}
 		{% for track in tracks %}
 		<div class="row">
 			<div class="col-md-1"></div>
 			<div class="col-md-3">
-							<div class="track-item">
-								<a href="{{url_for('showTrack',artist_name = artist.name, track_title=track.title)}}">
-								<h2 class="glyphicon glyphicon-music"> {{track.title}}</h2>																
-								</a>
-							</div>						
+				<div class="track-item">
+					<a href="{{url_for('showTrack',artist_name = artist.name, track_title=track.title)}}">
+						<h2 class="glyphicon glyphicon-music"> {{track.title}}</h2>																
+					</a>
+				</div>						
 			</div>
 			<div class="col-md-7">
 				<label class="lyrics-description">{{track.lyrics}}</label>

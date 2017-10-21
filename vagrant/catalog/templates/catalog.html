@@ -1,43 +1,40 @@
 {% extends "main.html" %}
 {% block content %}
 {% include "header.html" %}
-	<div class="row top-menu">
-		<div class="col-md-10"></div>
-		<div class="col-md-2 text-right">
-					</div>
-	</div>
-	<div class="row divider blue">
-		<div class="col-md-12"></div>
-	</div>
-	<div class = 'flash'>
-		      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-          
-        <ul>
-        {% for message in messages %}
-            <li> <strong> {{ message }} </strong> </li>
-        {% endfor %}
-        </ul>
+<div class="row top-menu">
+	<div class="col-md-10"></div>
+	<div class="col-md-2 text-right"></div>
+</div>
+<div class="row divider blue">
+	<div class="col-md-12"></div>
+</div>
+<div class = 'flash'>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li> <strong> {{ message }} </strong> </li>
+            {% endfor %}
+            </ul>
         {% endif %}
     {% endwith %}
-
 </div>
-	<div class="row">		
-		<div class="col-md-6">
-			<h2>Artists</h2>
+<div class="row">		
+	<div class="col-md-6">
+		<h2>Artists</h2>
 			{% for artist in artists %}
 			<a href = "{{url_for('showTracks', artist_name = artist.name)}}">								
 				<h3>{{artist.name}}</h3>			
 			</a>
 			{% endfor %}
-		</div>
-		<div class="col-md-6 padding-none">
-			<h2>Latest Tracks</h2>
+	</div>
+	<div class="col-md-6 padding-none">
+		<h2>Latest Tracks</h2>
 			{% for last in latest %}
 			<a href = "{{url_for('showTrack', artist_name = last[0], track_title=last[1])}}">					
 				<h3>{{last[1]}} ( {{last[0]}})</h3>
 			</a>
 			{% endfor %}
-		</div>
 	</div>
+</div>
 {% endblock %}
