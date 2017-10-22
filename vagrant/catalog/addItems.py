@@ -355,7 +355,7 @@ session.commit()
 # Tracks for Hillary Scott & The Scott Family
 artist8 = Artist(
        name="Hillary Scott & The Scott Family",
-       picture="https://image.ibb.co/hjr3y6/Hillary_Scott_The_Scott_Family.png")
+       picture="https://image.ibb.co/hjr3y6/Hillary_Scott_The_Scott_Family.png")   # NOQA
 
 session.add(artist8)
 session.commit()

@@ -62,7 +62,8 @@ def gconnect():
         return response
     # Check that the access token inside of it is valid sending it to google
     access_token = credentials.access_token
-    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={}'.format(
+        access_token))
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
     # If there was an error in the access token info, abort.
@@ -116,7 +117,8 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;'
+    output += '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     flash("Welcome %s" % login_session['username'])
     print "Successfully login!"
     return output
@@ -132,7 +134,8 @@ def gdisconnect():
             json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+    url = 'https://accounts.google.com/o/oauth2/revoke?token={}'.format(
+        login_session['access_token'])
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
@@ -181,6 +184,7 @@ def clearLoginSession(login_session):
     del login_session['user_id']
     del login_session['provider']
 
+
 # Show the artists and latest tracks
 @app.route('/')
 def showArtists():
@@ -220,19 +224,21 @@ def showTrack(artist_name, track_title):
     if ('username' not in login_session or
             creator.id != login_session['user_id']):
         return render_template(
-            'publictrack.html', track=track, artist=artist, video=embedVideo(track.video))
+            'publictrack.html', track=track, artist=artist,
+            video=embedVideo(track.video))
     else:
         return render_template(
-            'track.html', track=track, artist=artist, video=embedVideo(track.video))
+            'track.html', track=track, artist=artist,
+            video=embedVideo(track.video))
 
 
 # Embed youtube video
 def embedVideo(url):
-    return url.replace("watch?v=","embed/")
+    return url.replace("watch?v=", "embed/")
 
 
 # Edit track
-@app.route('/catalog/<int:artist_id>/<int:track_id>/edit', methods=['GET', 'POST'])
+@app.route('/catalog/<int:artist_id>/<int:track_id>/edit', methods=['GET', 'POST'])  # NOQA
 def editTrack(artist_id, track_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -240,7 +246,9 @@ def editTrack(artist_id, track_id):
     track = session.query(Track).filter_by(id=track_id).one()
     # in case the user try to access via url
     if track.user_id != login_session['user_id']:
-        return "<script>function myFunction(){alert('You are not authorized to edit this track.');}</script><body onload = 'myFunction()'>"
+        return """<script>function myFunction(){
+        alert('You are not authorized to edit this track.');}
+        </script><body onload = 'myFunction()'>"""
     if request.method == 'POST':
         if request.form['title']:
             track.title = request.form['title']
@@ -259,14 +267,16 @@ def editTrack(artist_id, track_id):
 
 
 # Delete track
-@app.route('/catalog/<int:artist_id>/<int:track_id>/delete', methods=['GET', 'POST'])
+@app.route('/catalog/<int:artist_id>/<int:track_id>/delete', methods=['GET', 'POST'])  # NOQA
 def deleteTrack(artist_id, track_id):
     if 'username' not in login_session:
         return redirect('/login')
     artist = session.query(Artist).filter_by(id=artist_id).one()
     track = session.query(Track).filter_by(id=track_id).one()
     if track.user_id != login_session['user_id']:
-        return "<script>function myFunction(){alert('You are not authorized to delete this track.');}</script><body onload = 'myFunction()'>"
+        return """<script>function myFunction(){
+        alert('You are not authorized to delete this track.');}
+        </script><body onload = 'myFunction()'>"""
     if request.method == 'POST':
         session.delete(track)
         session.commit()
